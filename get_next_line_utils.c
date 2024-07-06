@@ -6,22 +6,33 @@
 /*   By: czamora- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:16:07 by czamora-          #+#    #+#             */
-/*   Updated: 2024/07/06 18:57:07 by czamora-         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:25:19 by czamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	len;
+	size_t	i;
 
-	len = 0;
-	while (*s++)
+	i = 0;
+	if (dstsize == 0)
 	{
-		len++;
+		while (src[i])
+			i++;
+		return (i);
 	}
-	return (len);
+	while (i < dstsize -1 && src[i] != '\0')
+	{
+		dst[i] = src[i];
+		i++;
+	}
+	if (i < dstsize)
+		dst[i] = '\0';
+	while (src[i] != '\0')
+		i++;
+	return (i);
 }
 
 char	*ft_strdup(const char *s)
@@ -114,8 +125,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str = (char *)malloc(sizeof(char) * (len +1));
 	if (!str)
 		return (NULL);
-	while (start < len && s[start++])
-		str[start] = s[start];
-	str[start] = '\0';
+	ft_strlcpy(str, s + start, len + 1);
 	return (str);
 }

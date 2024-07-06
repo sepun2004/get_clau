@@ -6,38 +6,43 @@
 /*   By: czamora- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/11 16:19:30 by czamora-          #+#    #+#             */
-/*   Updated: 2024/07/06 19:27:14 by czamora-         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:14:24 by czamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
 
-char	*ft_strjoin_and_free(char *stored, char *buf)
+size_t	ft_strlen(const char *s)
 {
-	char	*temp;
+	size_t	len;
 
-	temp = ft_strjoin(stored, buf);
-	free(stored);
-	return (temp);
+	len = 0;
+	while (*s++)
+	{
+		len++;
+	}
+	return (len);
 }
 
-char	*read_and_store(int fd, char *stored)
+char	*read_and_store(int fd, char *stored, ssize_t bytes_read)
 {
 	char	*buf;
-	ssize_t	bytes_read;
+	char	*temp;
 
 	buf = (char *)malloc(BUFFER_SIZE + 1);
 	if (buf == NULL)
 		return (NULL);
-	bytes_read = 1;
+	bytes_read = read(fd, buf, BUFFER_SIZE);
 	while (bytes_read > 0)
 	{
-		bytes_read = read(fd, buf, BUFFER_SIZE);
 		buf[bytes_read] = '\0';
 		if (!stored)
 			stored = ft_strdup("");
-		stored = ft_strjoin_and_free(stored, buf);
+		temp = ft_strjoin(stored, buf);
+		free(stored);
+		stored = temp;
 		if (ft_strchr(buf, '\n'))
 			break ;
+		bytes_read = read (fd, buf, BUFFER_SIZE);
 	}
 	free(buf);
 	if (bytes_read < 0)
@@ -72,10 +77,12 @@ char	*get_next_line(int fd)
 {
 	static char	*stored;
 	char		*line;
+	ssize_t		bytes_read;
 
+	bytes_read = 1;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	stored = read_and_store(fd, stored);
+	stored = read_and_store(fd, stored, bytes_read);
 	if (!stored || !*stored)
 	{
 		free(stored);
