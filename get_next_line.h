@@ -6,7 +6,7 @@
 /*   By: czamora- <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/08 16:11:22 by czamora-          #+#    #+#             */
-/*   Updated: 2024/07/06 16:34:41 by czamora-         ###   ########.fr       */
+/*   Updated: 2024/07/06 20:18:07 by czamora-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #ifndef GET_NEXT_LINE_H
@@ -25,7 +25,6 @@ char	*ft_strchr(const char *s, int c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
-char	*read_until_newline(int fd, char *stored);
 char	*read_and_store(int fd, char *stored, ssize_t bytes_read);
 char	*extract_line(char **stored);
 char	*get_next_line(int fd);
